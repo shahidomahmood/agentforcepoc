@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "salesforce": {
+      "command": "npx",
+      "args": ["-y", "@salesforce/mcp-server"],
+      "env": {
+        "SF_ORG_ALIAS": "agentforcepoc"
+      }
+    }
+  }
+}

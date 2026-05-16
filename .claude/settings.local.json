@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(Get-ChildItem -Path \"C:\\\\Work\\\\Salesforce\\\\AgentforcePOC\\\\agentforcepoc\\\\agentforce-poc\" -Force)",
+      "Bash(Select-Object Name, Mode)",
+      "Bash(Format-Table -AutoSize)",
+      "PowerShell(Get-ChildItem *)",
+      "Bash(xargs cat)"
+    ]
+  }
+}
