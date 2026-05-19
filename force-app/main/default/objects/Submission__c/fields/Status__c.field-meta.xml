@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Status__c</fullName>
+    <label>Status</label>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Awaiting Triage</fullName>
+                <default>true</default>
+                <label>Awaiting Triage</label>
+            </value>
+            <value>
+                <fullName>UW Review</fullName>
+                <default>false</default>
+                <label>UW Review</label>
+            </value>
+            <value>
+                <fullName>Bound</fullName>
+                <default>false</default>
+                <label>Bound</label>
+            </value>
+            <value>
+                <fullName>Declined</fullName>
+                <default>false</default>
+                <label>Declined</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

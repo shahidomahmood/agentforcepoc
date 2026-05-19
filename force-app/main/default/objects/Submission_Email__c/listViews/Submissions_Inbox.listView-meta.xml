@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Submissions_Inbox</fullName>
+    <columns>From_Name__c</columns>
+    <columns>From_Email__c</columns>
+    <columns>Subject__c</columns>
+    <columns>Received_Date__c</columns>
+    <columns>Attachment_Count__c</columns>
+    <columns>Status__c</columns>
+    <filterScope>Everything</filterScope>
+    <label>Submissions Inbox</label>
+    <sharedTo>
+        <allInternalUsers></allInternalUsers>
+    </sharedTo>
+</ListView>
