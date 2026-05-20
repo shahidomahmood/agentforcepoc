@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomApplication xmlns="http://soap.sforce.com/2006/04/metadata">
     <defaultLandingTab>Submission_Email__c</defaultLandingTab>
-    <formFactors>Large</formFactors>
     <formFactors>Small</formFactors>
+    <formFactors>Large</formFactors>
     <isNavAutoTempTabsDisabled>false</isNavAutoTempTabsDisabled>
     <isNavPersonalizationDisabled>false</isNavPersonalizationDisabled>
+    <isNavTabPersistenceDisabled>false</isNavTabPersistenceDisabled>
+    <isOmniPinnedViewEnabled>false</isOmniPinnedViewEnabled>
     <label>Agentforce POC</label>
     <navType>Standard</navType>
+    <tabs>Submissions_Inbox1</tabs>
     <tabs>Submission_Email__c</tabs>
     <tabs>Submission__c</tabs>
     <uiType>Lightning</uiType>
