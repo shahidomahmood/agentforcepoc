@@ -10,6 +10,7 @@
 
         <div class="slds-var-p-around_medium">
 
+            <!-- Initial data load -->
             <template if:true={isLoading}>
                 <div class="slds-align_absolute-center slds-var-p-vertical_x-large">
                     <lightning-spinner alternative-text="Loading submissions" size="medium"></lightning-spinner>
@@ -18,28 +19,42 @@
 
             <template if:false={isLoading}>
 
-                <template if:true={hasError}>
-                    <div class="slds-notify slds-notify_alert slds-alert_error" role="alert">
-                        <span class="slds-assistive-text">error</span>
-                        <h2>Failed to load submissions. Please refresh.</h2>
+                <!-- Processing spinner shown while Apex action runs -->
+                <template if:true={isProcessing}>
+                    <div class="slds-align_absolute-center slds-var-p-vertical_x-large">
+                        <lightning-spinner alternative-text="Creating submission..." size="medium"></lightning-spinner>
+                        <p class="slds-text-body_regular slds-text-color_weak slds-var-m-top_small">
+                            Creating submission with Agentforce&hellip;
+                        </p>
                     </div>
                 </template>
 
-                <template if:false={hasError}>
-                    <template if:true={hasEmails}>
-                        <lightning-datatable
-                            key-field="Id"
-                            data={emails}
-                            columns={columns}
-                            hide-checkbox-column
-                            onrowaction={handleRowAction}>
-                        </lightning-datatable>
-                    </template>
-                    <template if:false={hasEmails}>
-                        <div class="slds-align_absolute-center slds-var-p-vertical_x-large">
-                            <p class="slds-text-body_regular slds-text-color_weak">No submissions received yet.</p>
+                <template if:false={isProcessing}>
+
+                    <template if:true={hasError}>
+                        <div class="slds-notify slds-notify_alert slds-alert_error" role="alert">
+                            <span class="slds-assistive-text">error</span>
+                            <h2>Failed to load submissions. Please refresh.</h2>
                         </div>
                     </template>
+
+                    <template if:false={hasError}>
+                        <template if:true={hasEmails}>
+                            <lightning-datatable
+                                key-field="Id"
+                                data={emails}
+                                columns={columns}
+                                hide-checkbox-column
+                                onrowaction={handleRowAction}>
+                            </lightning-datatable>
+                        </template>
+                        <template if:false={hasEmails}>
+                            <div class="slds-align_absolute-center slds-var-p-vertical_x-large">
+                                <p class="slds-text-body_regular slds-text-color_weak">No submissions received yet.</p>
+                            </div>
+                        </template>
+                    </template>
+
                 </template>
 
             </template>
