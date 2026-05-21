@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>64.0</apiVersion>
+    <description>Orchestrates the processing of a Submission_Email__c record: creates a preliminary Submission__c, links attachments, and marks the email as Processed. Callable from the LWC Process button and future Agentforce agent actions.</description>
+    <interviewLabel>Process Submission Email {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Process Submission Email</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <start>
+        <locationX>56</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Create_Submission_From_Email</targetReference>
+        </connector>
+    </start>
+    <status>Active</status>
+    <actionCalls>
+        <name>Create_Submission_From_Email</name>
+        <label>Create Submission From Email</label>
+        <locationX>176</locationX>
+        <locationY>158</locationY>
+        <actionName>ProcessSubmissionEmailAction</actionName>
+        <actionType>apex</actionType>
+        <inputParameters>
+            <name>submissionEmailId</name>
+            <value>
+                <elementReference>submissionEmailId</elementReference>
+            </value>
+        </inputParameters>
+        <outputParameters>
+            <assignToReference>submissionId</assignToReference>
+            <name>submissionId</name>
+        </outputParameters>
+    </actionCalls>
+    <variables>
+        <name>submissionEmailId</name>
+        <dataType>String</dataType>
+        <description>Salesforce record ID of the Submission_Email__c to process</description>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>submissionId</name>
+        <dataType>String</dataType>
+        <description>Salesforce record ID of the newly created Submission__c record</description>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>true</isOutput>
+    </variables>
+</Flow>
