@@ -50,13 +50,13 @@ const COLUMNS = [
     },
     {
         type: 'button',
-        initialWidth: 210,
+        initialWidth: 140,
         typeAttributes: {
-            label: 'Process with Agentforce',
+            label: 'Process',
             name: 'process',
             variant: 'brand',
-            iconName: 'utility:einstein',
-            iconPosition: 'left',
+            iconName: 'utility:forward',
+            iconPosition: 'right',
             disabled: { fieldName: 'isProcessed' }
         }
     }
