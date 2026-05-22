@@ -1,7 +1,9 @@
 import { LightningElement, wire } from 'lwc';
 import { NavigationMixin } from 'lightning/navigation';
 import { refreshApex } from '@salesforce/apex';
+import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import getSubmissionEmails from '@salesforce/apex/SubmissionsInboxController.getSubmissionEmails';
+import processEmail from '@salesforce/apex/ProcessSubmissionEmailAction.processEmail';
 
 const COLUMNS = [
     {
@@ -48,22 +50,24 @@ const COLUMNS = [
     },
     {
         type: 'button',
-        initialWidth: 140,
+        initialWidth: 210,
         typeAttributes: {
-            label: 'Process',
+            label: 'Process with Agentforce',
             name: 'process',
             variant: 'brand',
-            iconName: 'utility:forward',
-            iconPosition: 'right'
+            iconName: 'utility:einstein',
+            iconPosition: 'left',
+            disabled: { fieldName: 'isProcessed' }
         }
     }
 ];
 
 export default class SubmissionsInbox extends NavigationMixin(LightningElement) {
-    columns   = COLUMNS;
-    emails    = [];
-    isLoading = true;
-    hasError  = false;
+    columns      = COLUMNS;
+    emails       = [];
+    isLoading    = true;
+    isProcessing = false;
+    hasError     = false;
     _wiredResult;
 
     @wire(getSubmissionEmails)
@@ -76,7 +80,8 @@ export default class SubmissionsInbox extends NavigationMixin(LightningElement) 
                 ...record,
                 fromDisplay: record.From_Name__c
                     ? `${record.From_Name__c} <${record.From_Email__c ?? ''}>`
-                    : (record.From_Email__c ?? '—')
+                    : (record.From_Email__c ?? '—'),
+                isProcessed: record.Status__c === 'Processed'
             }));
             this.isLoading = false;
             this.hasError  = false;
@@ -97,13 +102,49 @@ export default class SubmissionsInbox extends NavigationMixin(LightningElement) 
     }
 
     handleRowAction(event) {
-        const row = event.detail.row;
-        this[NavigationMixin.Navigate]({
-            type: 'standard__recordPage',
-            attributes: {
-                recordId:   row.Id,
-                actionName: 'view'
-            }
-        });
+        const { action, row } = event.detail;
+
+        if (action.name === 'process') {
+            this._processEmail(row.Id);
+        } else {
+            this[NavigationMixin.Navigate]({
+                type: 'standard__recordPage',
+                attributes: { recordId: row.Id, actionName: 'view' }
+            });
+        }
+    }
+
+    _processEmail(emailId) {
+        this.isProcessing = true;
+
+        processEmail({ submissionEmailId: emailId })
+            .then(submissionId => {
+                this.dispatchEvent(new ShowToastEvent({
+                    title:   'Submission Created',
+                    message: 'Email processed and submission record created.',
+                    variant: 'success'
+                }));
+                refreshApex(this._wiredResult);
+                this[NavigationMixin.Navigate]({
+                    type: 'standard__recordPage',
+                    attributes: {
+                        recordId:      submissionId,
+                        objectApiName: 'Submission__c',
+                        actionName:    'view'
+                    }
+                });
+            })
+            .catch(error => {
+                const msg = error?.body?.message ?? 'An unexpected error occurred.';
+                this.dispatchEvent(new ShowToastEvent({
+                    title:   'Processing Failed',
+                    message: msg,
+                    variant: 'error',
+                    mode:    'sticky'
+                }));
+            })
+            .finally(() => {
+                this.isProcessing = false;
+            });
     }
 }
