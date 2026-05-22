@@ -1,4 +1,4 @@
-public with sharing class SubmissionEmailService {
+public without sharing class SubmissionEmailService {
 
     public static Submission_Email__c createFromEmail(Messaging.InboundEmail email) {
         Integer attachmentCount = 0;

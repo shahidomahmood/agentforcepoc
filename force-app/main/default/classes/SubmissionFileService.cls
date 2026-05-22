@@ -1,4 +1,4 @@
-public with sharing class SubmissionFileService {
+public without sharing class SubmissionFileService {
 
     public static void storeAttachments(
         List<Messaging.InboundEmail.BinaryAttachment> binaryAttachments,
