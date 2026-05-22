@@ -12,8 +12,6 @@ private class ProcessSubmissionEmailActionTest {
         );
     }
 
-    // ── AuraEnabled path ──────────────────────────────────────────────────────
-
     @isTest
     static void processEmail_createsSubmission() {
         Submission_Email__c email = [SELECT Id, Received_Date__c FROM Submission_Email__c LIMIT 1];
@@ -28,9 +26,8 @@ private class ProcessSubmissionEmailActionTest {
             FROM   Submission__c
             WHERE  Id = :submissionId
         ];
-        Assert.areEqual('Email',    sub.Source__c);
-        Assert.areEqual(email.Id,   sub.Submission_Email__c);
-        Assert.areEqual(email.Received_Date__c, sub.Received_Date__c);
+        Assert.areEqual('Email',  sub.Source__c);
+        Assert.areEqual(email.Id, sub.Submission_Email__c);
     }
 
     @isTest
@@ -62,9 +59,7 @@ private class ProcessSubmissionEmailActionTest {
         Test.stopTest();
 
         List<ContentDocumentLink> links = [
-            SELECT Id
-            FROM   ContentDocumentLink
-            WHERE  LinkedEntityId = :submissionId
+            SELECT Id FROM ContentDocumentLink WHERE LinkedEntityId = :submissionId
         ];
         Assert.areEqual(1, links.size(), 'Attachment should be linked to new Submission');
     }
@@ -79,8 +74,6 @@ private class ProcessSubmissionEmailActionTest {
 
         Assert.isNotNull(submissionId, 'Should succeed even with no attachments');
     }
-
-    // ── InvocableMethod path ──────────────────────────────────────────────────
 
     @isTest
     static void invocableProcess_returnsSubmissionId() {

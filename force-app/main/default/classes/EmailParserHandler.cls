@@ -35,14 +35,12 @@ global class EmailParserHandler implements Messaging.InboundEmailHandler {
 
             System.debug('Submission_Email__c created: ' + emailRecord.Id);
 
-            // ── LOG PDF ATTACHMENTS FOR FUTURE PROCESSING ───
-            if (email.binaryAttachments != null) {
-                for (Messaging.InboundEmail.BinaryAttachment att : email.binaryAttachments) {
-                    System.debug('Attachment: ' + att.filename
-                        + ' (' + att.mimeTypeSubType + ', '
-                        + att.body.size() + ' bytes)');
-                }
-            }
+            // ── STORE ATTACHMENTS AS SALESFORCE FILES ────────
+            SubmissionFileService.storeAttachments(
+                email.binaryAttachments,
+                email.textAttachments,
+                emailRecord.Id
+            );
 
             result.success = true;
 
