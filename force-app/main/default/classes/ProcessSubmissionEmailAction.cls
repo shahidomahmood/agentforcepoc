@@ -22,14 +22,26 @@ public with sharing class ProcessSubmissionEmailAction {
 
     private static String doProcess(String emailId) {
         Submission_Email__c email = [
-            SELECT Id, From_Name__c, From_Email__c, Received_Date__c, Status__c
+            SELECT Id, From_Name__c, From_Email__c, Body__c, Received_Date__c, Status__c
             FROM   Submission_Email__c
             WHERE  Id = :emailId
             LIMIT  1
         ];
 
+        String lastName = 'Unknown';
+        if (String.isNotBlank(email.From_Name__c)) {
+            List<String> parts = email.From_Name__c.trim().split('\\s+');
+            lastName = parts[parts.size() - 1];
+        }
+        String dateStr = email.Received_Date__c != null
+            ? email.Received_Date__c.format('yyyyMMdd')
+            : String.valueOf(Date.today()).replace('-', '');
+        String subName = dateStr + '-' + lastName + '-Submission';
+
         Submission__c sub = new Submission__c(
+            Name                = subName,
             Source__c           = 'Email',
+            Body__c             = email.Body__c,
             Received_Date__c    = email.Received_Date__c,
             Submission_Email__c = email.Id
         );
