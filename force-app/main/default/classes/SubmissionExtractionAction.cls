@@ -1,5 +1,9 @@
 public with sharing class SubmissionExtractionAction {
 
+    private static final String PDFCO_API_KEY = PDFcoIntegration.API_KEY;
+    private static final String PDFCO_UPLOAD_URL  = 'https://api.pdf.co/v1/file/upload/base64';
+    private static final String PDFCO_EXTRACT_URL = 'https://api.pdf.co/v1/pdf/convert/to/text';
+
     public class ExtractionRequest {
         @InvocableVariable(required=true label='Submission ID')
         public String submissionId;
@@ -32,19 +36,16 @@ public with sharing class SubmissionExtractionAction {
 
     @AuraEnabled
     public static void extractData(String submissionId) {
+        // Query before any DML so callouts are allowed in the same transaction
         Submission__c sub = [
-            SELECT Id, Name, Extraction_Status__c
+            SELECT Id, Name, Body__c
             FROM   Submission__c
             WHERE  Id = :submissionId
             LIMIT  1
         ];
 
-        sub.Extraction_Status__c = 'Extraction Pending';
-        sub.Extraction_Log__c    = null;
-        update sub;
-
         try {
-            String docText = getDocumentText(submissionId);
+            String docText = getDocumentText(submissionId, sub.Body__c);
 
             String promptName = 'Submission_Data_Extraction';
             ConnectApi.EinsteinPromptTemplateGenerationsInput input =
@@ -62,7 +63,6 @@ public with sharing class SubmissionExtractionAction {
                 ConnectApi.EinsteinLLM.generateMessagesForPromptTemplate(promptName, input);
 
             String rawJson = response.generations[0].text;
-
             Map<String, Object> extracted = (Map<String, Object>) JSON.deserializeUntyped(rawJson);
 
             sub.Insured_Name__c           = stringVal(extracted, 'insuredName');
@@ -95,7 +95,9 @@ public with sharing class SubmissionExtractionAction {
         }
     }
 
-    private static String getDocumentText(String submissionId) {
+    private static String getDocumentText(String submissionId, String emailBody) {
+        List<String> textParts = new List<String>();
+
         List<ContentDocumentLink> links = [
             SELECT ContentDocumentId
             FROM   ContentDocumentLink
@@ -103,42 +105,100 @@ public with sharing class SubmissionExtractionAction {
             ORDER BY SystemModstamp DESC
         ];
 
-        if (links.isEmpty()) {
-            throw new AuraHandledException('No documents found on this submission.');
-        }
+        if (!links.isEmpty()) {
+            List<Id> docIds = new List<Id>();
+            for (ContentDocumentLink cdl : links) {
+                docIds.add(cdl.ContentDocumentId);
+            }
 
-        List<Id> docIds = new List<Id>();
-        for (ContentDocumentLink cdl : links) {
-            docIds.add(cdl.ContentDocumentId);
-        }
+            List<ContentVersion> versions = [
+                SELECT Title, VersionData, FileExtension, FileType
+                FROM   ContentVersion
+                WHERE  ContentDocumentId IN :docIds
+                  AND  IsLatest = true
+                  AND  FileType IN ('PDF', 'Word_x', 'Word', 'Text', 'UNKNOWN')
+                ORDER BY SystemModstamp DESC
+                LIMIT  3
+            ];
 
-        List<ContentVersion> versions = [
-            SELECT Title, TextPreview, VersionData, FileExtension
-            FROM   ContentVersion
-            WHERE  ContentDocumentId IN :docIds
-              AND  IsLatest = true
-            ORDER BY SystemModstamp DESC
-        ];
-
-        if (versions.isEmpty()) {
-            throw new AuraHandledException('No document versions found.');
-        }
-
-        // Use TextPreview as a best-effort text extraction
-        // For PDF/Office docs Salesforce populates TextPreview (up to 1000 chars)
-        // Combine all available text
-        List<String> textParts = new List<String>();
-        for (ContentVersion cv : versions) {
-            if (String.isNotBlank(cv.TextPreview)) {
-                textParts.add('--- Document: ' + cv.Title + ' ---\n' + cv.TextPreview);
+            for (ContentVersion cv : versions) {
+                try {
+                    String extracted = extractTextViaPDFco(cv);
+                    if (String.isNotBlank(extracted)) {
+                        textParts.add('--- Document: ' + cv.Title + ' ---\n' + extracted);
+                    }
+                } catch (Exception e) {
+                    // Log but continue — try remaining documents
+                    System.debug('PDF.co extraction failed for ' + cv.Title + ': ' + e.getMessage());
+                }
             }
         }
 
+        // Fall back to email body for image-based PDFs or when no documents are attached
+        if (textParts.isEmpty() && String.isNotBlank(emailBody)) {
+            textParts.add('--- Email Body ---\n' + emailBody);
+        }
+
         if (textParts.isEmpty()) {
-            throw new AuraHandledException('No readable text found in attached documents.');
+            throw new AuraHandledException(
+                'No readable text found. Attach a text-based PDF or ensure the submission email body is populated.'
+            );
         }
 
         return String.join(textParts, '\n\n');
+    }
+
+    private static String extractTextViaPDFco(ContentVersion cv) {
+        // Step 1: upload the file bytes to PDF.co temporary storage
+        String base64Data = EncodingUtil.base64Encode(cv.VersionData);
+        String fileName   = (cv.Title + '.' + cv.FileExtension).replaceAll('[^a-zA-Z0-9._-]', '_');
+
+        HttpRequest uploadReq = new HttpRequest();
+        uploadReq.setEndpoint(PDFCO_UPLOAD_URL);
+        uploadReq.setMethod('POST');
+        uploadReq.setHeader('Content-Type', 'application/json');
+        uploadReq.setHeader('x-api-key', PDFCO_API_KEY);
+        uploadReq.setBody(JSON.serialize(new Map<String, Object>{
+            'file' => base64Data,
+            'name' => fileName
+        }));
+        uploadReq.setTimeout(120000);
+
+        HttpResponse uploadRes = new Http().send(uploadReq);
+        if (uploadRes.getStatusCode() != 200) {
+            throw new AuraHandledException('PDF.co upload failed (' + uploadRes.getStatusCode() + '): ' + uploadRes.getBody());
+        }
+
+        Map<String, Object> uploadResult = (Map<String, Object>) JSON.deserializeUntyped(uploadRes.getBody());
+        if (uploadResult.get('error') == true) {
+            throw new AuraHandledException('PDF.co upload error: ' + uploadResult.get('message'));
+        }
+        String tempUrl = (String) uploadResult.get('url');
+
+        // Step 2: extract text from the uploaded file
+        HttpRequest extractReq = new HttpRequest();
+        extractReq.setEndpoint(PDFCO_EXTRACT_URL);
+        extractReq.setMethod('POST');
+        extractReq.setHeader('Content-Type', 'application/json');
+        extractReq.setHeader('x-api-key', PDFCO_API_KEY);
+        extractReq.setBody(JSON.serialize(new Map<String, Object>{
+            'url'    => tempUrl,
+            'inline' => true,
+            'async'  => false
+        }));
+        extractReq.setTimeout(120000);
+
+        HttpResponse extractRes = new Http().send(extractReq);
+        if (extractRes.getStatusCode() != 200) {
+            throw new AuraHandledException('PDF.co extract failed (' + extractRes.getStatusCode() + '): ' + extractRes.getBody());
+        }
+
+        Map<String, Object> extractResult = (Map<String, Object>) JSON.deserializeUntyped(extractRes.getBody());
+        if (extractResult.get('error') == true) {
+            throw new AuraHandledException('PDF.co extract error: ' + extractResult.get('message'));
+        }
+
+        return (String) extractResult.get('body');
     }
 
     private static String stringVal(Map<String, Object> m, String key) {
