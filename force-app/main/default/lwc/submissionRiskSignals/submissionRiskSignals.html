@@ -1,0 +1,78 @@
+<template>
+    <lightning-card title="Risk Assessment" icon-name="utility:warning">
+        <div class="slds-var-p-around_medium">
+
+            <div class="slds-var-m-bottom_medium slds-grid slds-grid_align-spread slds-grid_vertical-align-center">
+                <lightning-button
+                    label="Evaluate Risk"
+                    variant="brand"
+                    icon-name="utility:einstein"
+                    icon-position="left"
+                    onclick={handleEvaluate}
+                    disabled={isLoading}>
+                </lightning-button>
+                <template if:true={isLoading}>
+                    <lightning-spinner alternative-text="Evaluating risk..." size="small"></lightning-spinner>
+                </template>
+            </div>
+
+            <template if:true={hasScores}>
+                <div class="slds-grid slds-gutters slds-var-m-bottom_medium">
+                    <div class="slds-col slds-size_1-of-3">
+                        <div class="score-tile">
+                            <div class="score-label">Appetite Score</div>
+                            <div class="score-value">{appetiteScore}<span class="score-max">/100</span></div>
+                        </div>
+                    </div>
+                    <div class="slds-col slds-size_1-of-3">
+                        <div class="score-tile">
+                            <div class="score-label">Risk Score</div>
+                            <div class="score-value">{riskScore}<span class="score-max">/100</span></div>
+                        </div>
+                    </div>
+                    <div class="slds-col slds-size_1-of-3">
+                        <div class={priorityTileClass}>
+                            <div class="score-label">Review Priority</div>
+                            <div class="score-value score-value_small">{reviewPriority}</div>
+                        </div>
+                    </div>
+                </div>
+            </template>
+
+            <template if:true={hasSignals}>
+                <h3 class="slds-text-heading_small slds-var-m-bottom_x-small">Risk Signals</h3>
+                <template for:each={signals} for:item="sig">
+                    <div key={sig.Signal_Type__c} class={sig.cssClass}>
+                        <div class="slds-grid slds-grid_vertical-align-center">
+                            <span class={sig.badgeClass}>{sig.Severity__c}</span>
+                            <span class="slds-var-m-left_x-small slds-text-body_regular">{sig.Signal_Type__c}</span>
+                            <span class="slds-var-m-left_x-small slds-text-body_small slds-text-color_weak source-tag">{sig.Source__c}</span>
+                        </div>
+                        <template if:true={sig.Explanation__c}>
+                            <p class="slds-text-body_small slds-text-color_weak slds-var-m-top_xx-small signal-detail">{sig.Explanation__c}</p>
+                        </template>
+                        <template if:true={sig.Recommended_Action__c}>
+                            <p class="slds-text-body_small slds-text-color_weak signal-detail">
+                                <strong>Action:</strong> {sig.Recommended_Action__c}
+                            </p>
+                        </template>
+                    </div>
+                </template>
+            </template>
+
+            <template if:true={riskSummary}>
+                <h3 class="slds-text-heading_small slds-var-m-top_medium slds-var-m-bottom_x-small">Underwriter Brief</h3>
+                <div class="slds-box slds-box_x-small slds-theme_shade brief-box">
+                    <p class="slds-text-body_regular">{riskSummary}</p>
+                </div>
+            </template>
+
+            <template if:false={hasContent}>
+                <p class="slds-text-body_regular slds-text-color_weak">
+                    Click Evaluate Risk to analyse this submission against appetite rules and generate risk signals.
+                </p>
+            </template>
+
+        </div>
+    </lightning-card>
+</template>

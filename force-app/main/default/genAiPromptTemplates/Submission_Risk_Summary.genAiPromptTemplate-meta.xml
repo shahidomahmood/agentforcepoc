@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenAiPromptTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <masterLabel>Submission Risk Summary</masterLabel>
+    <templateVersions>
+        <content>You are an insurance underwriting assistant. Provide a concise risk summary for an underwriter.
+
+The submission is for a {!$Input:LineOfBusiness} policy for {!$Input:InsuredName}.
+
+External Risk Scores: {!$Input:Scores}
+
+Risk Signals Detected:
+{!$Input:RiskSignals}
+
+Write a 2-3 sentence underwriter brief that:
+- Summarizes the key risk indicators
+- Notes the appetite alignment based on the scores
+- Recommends a review priority action
+- Uses professional insurance underwriting language
+
+Return only the brief text, no headings or extra commentary.</content>
+        <status>Published</status>
+    </templateVersions>
+    <type>SalesEmail</type>
+    <visibility>Global</visibility>
+</GenAiPromptTemplate>
