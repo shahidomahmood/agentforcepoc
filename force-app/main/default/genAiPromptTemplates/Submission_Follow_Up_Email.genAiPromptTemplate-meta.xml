@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenAiPromptTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <masterLabel>Submission Follow Up Email</masterLabel>
+    <templateVersions>
+        <content>You are an insurance underwriting assistant. Draft a professional follow-up email to a broker requesting missing submission information.
+
+The submission is for a {!$Input:LineOfBusiness} policy for {!$Input:InsuredName}.
+
+The following required items are missing:
+{!$Input:MissingItems}
+
+Write a concise, professional email:
+- Start with "Dear Broker,"
+- Thank them for the submission
+- Clearly list each missing item as a bullet point
+- Request they provide the information at their earliest convenience
+- Sign as "The Underwriting Team"
+- Do not include a subject line in the body
+
+Return only the email body text, no extra commentary.</content>
+        <status>Published</status>
+    </templateVersions>
+    <type>SalesEmail</type>
+    <visibility>Global</visibility>
+</GenAiPromptTemplate>
