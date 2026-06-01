@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>64.0</apiVersion>
+    <description>After a Submission__c is created, enqueues an async job to create Submission_Document__c bridge records and push file content + metadata to Data Cloud Data Library ADL_AgentforcePOC_D for Agentforce retrieval. Indexing_Status__c defaults to Pending on the field; the queueable writes Indexed / Partial / Failed when done.</description>
+    <interviewLabel>Index Submission Documents {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Index Submission Documents</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <start>
+        <locationX>56</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Enqueue_Indexing_Job</targetReference>
+        </connector>
+        <object>Submission__c</object>
+        <recordTriggerType>Create</recordTriggerType>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Active</status>
+    <actionCalls>
+        <name>Enqueue_Indexing_Job</name>
+        <label>Enqueue Indexing Job</label>
+        <locationX>176</locationX>
+        <locationY>158</locationY>
+        <actionName>IndexSubmissionAction</actionName>
+        <actionType>apex</actionType>
+        <inputParameters>
+            <name>submissionIds</name>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputParameters>
+    </actionCalls>
+</Flow>
