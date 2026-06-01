@@ -57,7 +57,9 @@
       "Bash(NODE_TLS_REJECT_UNAUTHORIZED=0 sf project deploy start --metadata \"ApexClass:DataCloudIngestionService\" --metadata \"ApexClass:DataCloudIngestionQueueable\" --json)",
       "Bash(NODE_TLS_REJECT_UNAUTHORIZED=0 sf project deploy report --job-id 0Afg5000008y8nhCAA --json)",
       "Bash(python3 -c \"import sys,json; d=json.load\\(sys.stdin\\); r=d['result']; print\\('Status:', r['status']\\); print\\('Errors:', r['numberComponentErrors']\\); print\\('Deployed:', r['numberComponentsDeployed']\\); [print\\('FAIL:', f['fullName'], f.get\\('problem',''\\)\\) for f in r['details'].get\\('componentFailures',[]\\)]\")",
-      "Bash(NODE_TLS_REJECT_UNAUTHORIZED=0 sf project deploy report --job-id 0Afg5000008y8nhCAA)"
+      "Bash(NODE_TLS_REJECT_UNAUTHORIZED=0 sf project deploy report --job-id 0Afg5000008y8nhCAA)",
+      "Bash(rm -f force-app/main/default/classes/DataCloudIngestionService.cls force-app/main/default/classes/DataCloudIngestionService.cls-meta.xml force-app/main/default/classes/DataCloudIngestionServiceTest.cls force-app/main/default/classes/DataCloudIngestionServiceTest.cls-meta.xml force-app/main/default/classes/DataCloudIngestionQueueable.cls force-app/main/default/classes/DataCloudIngestionQueueable.cls-meta.xml force-app/main/default/classes/DataCloudIngestionQueueableTest.cls force-app/main/default/classes/DataCloudIngestionQueueableTest.cls-meta.xml force-app/main/default/classes/PushToDataCloudAction.cls force-app/main/default/classes/PushToDataCloudAction.cls-meta.xml)",
+      "Bash(rm -rf force-app/main/default/namedCredentials)"
     ]
   }
 }

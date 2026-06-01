@@ -17,47 +17,37 @@ private class SubmissionIndexingQueueableTest {
         insert cv;
     }
 
-    // ── Phase-1 responsibility: create Submission_Document__c records ──────────
+    // ── With files: one Submission_Document__c bridge record per attached file ──
     //
-    // Calling execute() directly (rather than via System.enqueueJob) avoids the
-    // Salesforce "Maximum stack depth" restriction that fires when a Queueable
-    // tries to enqueue another job during test execution.  The inner
-    // DataCloudIngestionQueueable is still enqueued and runs at Test.stopTest(),
-    // so we set a mock and assert the final Indexed state.
+    // No Data Cloud callout happens here — the CRM connector syncs the records
+    // (and the underlying files) into Data Cloud on its own schedule. The records
+    // are left in their default 'Pending' status purely for later matching.
 
     @IsTest
-    static void execute_withFiles_createsDocRecordsAndIndexesThem() {
+    static void execute_withFiles_createsBridgeRecords() {
         Submission__c sub = makeSubmission();
         attachFile(sub.Id, 'acord125.pdf',  Blob.valueOf('%PDF acord content'));
         attachFile(sub.Id, 'loss_runs.pdf', Blob.valueOf('%PDF loss run content'));
 
-        Test.setMock(HttpCalloutMock.class, new MockSuccess());
-
         Test.startTest();
-        new SubmissionIndexingQueueable(sub.Id).execute(null);
-        // DataCloudIngestionQueueable is now enqueued; Test.stopTest() runs it
+        System.enqueueJob(new SubmissionIndexingQueueable(sub.Id));
         Test.stopTest();
 
         List<Submission_Document__c> docs = [
-            SELECT Document_Name__c, Indexing_Status__c, Error_Message__c
+            SELECT Document_Name__c, Document_Type__c, Indexing_Status__c
             FROM   Submission_Document__c
             WHERE  Submission__c = :sub.Id
             ORDER BY Document_Name__c
         ];
         Assert.areEqual(2, docs.size(), 'One document record per attached file');
-        for (Submission_Document__c doc : docs) {
-            Assert.areEqual(
-                'Indexed', doc.Indexing_Status__c,
-                'Status should be Indexed after DataCloudIngestionQueueable runs. Error: '
-                + doc.Error_Message__c
-            );
-        }
+        Assert.areEqual('ACORD 125', docs[0].Document_Type__c, 'acord125.pdf maps to ACORD 125');
+        Assert.areEqual('Loss Runs', docs[1].Document_Type__c, 'loss_runs.pdf maps to Loss Runs');
     }
 
-    // ── No-files path: submission is immediately Indexed (no callout needed) ──
+    // ── No files: no bridge records are created ────────────────────────────────
 
     @IsTest
-    static void execute_noFiles_marksSubmissionIndexed() {
+    static void execute_noFiles_createsNoBridgeRecords() {
         Submission__c sub = makeSubmission();
 
         Test.startTest();
@@ -68,9 +58,6 @@ private class SubmissionIndexingQueueableTest {
             SELECT COUNT() FROM Submission_Document__c WHERE Submission__c = :sub.Id
         ];
         Assert.areEqual(0, docCount, 'No document records when no files attached');
-
-        Submission__c updated = [SELECT Indexing_Status__c FROM Submission__c WHERE Id = :sub.Id];
-        Assert.areEqual('Indexed', updated.Indexing_Status__c);
     }
 
     // ── Static enqueue helper ─────────────────────────────────────────────────
@@ -84,16 +71,5 @@ private class SubmissionIndexingQueueableTest {
         Test.stopTest();
 
         Assert.isTrue(true, 'enqueue() should dispatch without throwing');
-    }
-
-    // ── Mock ──────────────────────────────────────────────────────────────────
-
-    private class MockSuccess implements HttpCalloutMock {
-        public HttpResponse respond(HttpRequest req) {
-            HttpResponse res = new HttpResponse();
-            res.setStatusCode(202);
-            res.setBody('{"requestId":"req-siq-001"}');
-            return res;
-        }
     }
 }

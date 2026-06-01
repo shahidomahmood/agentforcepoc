@@ -1,8 +1,8 @@
 public with sharing class IndexSubmissionAction {
 
     @InvocableMethod(
-        label='Index Submission Documents in Data Cloud'
-        description='Enqueues an async job that creates Submission_Document__c bridge records and pushes document metadata to the Data Cloud Data Library (ADL_AgentforcePOC_D) for Agentforce retrieval.'
+        label='Capture Submission Documents'
+        description='Enqueues an async job that creates Submission_Document__c bridge records for the files attached to a submission. The Data Cloud CRM connector syncs those records and files into Data Cloud; this action does not call out to Data Cloud.'
         category='Submission Management'
     )
     public static void index(List<String> submissionIds) {

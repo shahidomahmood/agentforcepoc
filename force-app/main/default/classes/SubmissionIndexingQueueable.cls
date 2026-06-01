@@ -11,17 +11,11 @@ public class SubmissionIndexingQueueable implements Queueable {
     }
 
     public void execute(QueueableContext ctx) {
-        List<Submission_Document__c> docs = SubmissionDocumentService.createDocumentRecords(submissionId);
-
-        if (docs.isEmpty()) {
-            update new Submission__c(Id = submissionId, Indexing_Status__c = 'Indexed');
-            return;
-        }
-
-        List<Id> docIds = new List<Id>();
-        for (Submission_Document__c doc : docs) {
-            docIds.add(doc.Id);
-        }
-        System.enqueueJob(new DataCloudIngestionQueueable(docIds, submissionId));
+        // Create the Submission_Document__c bridge records for every file attached
+        // to the submission. The Data Cloud CRM connector syncs these records (and
+        // the underlying Salesforce Files) into Data Cloud on its own schedule, so
+        // there is no callout here — the bridge object exists purely so we can match
+        // a submission to its indexed documents later.
+        SubmissionDocumentService.createDocumentRecords(submissionId);
     }
 }

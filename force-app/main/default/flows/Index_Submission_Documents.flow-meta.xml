@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <apiVersion>64.0</apiVersion>
-    <description>After a Submission__c is created, enqueues an async job to create Submission_Document__c bridge records and push file content + metadata to Data Cloud Data Library ADL_AgentforcePOC_D for Agentforce retrieval. Indexing_Status__c defaults to Pending on the field; the queueable writes Indexed / Partial / Failed when done.</description>
+    <description>After a Submission__c is created, enqueues an async job to create Submission_Document__c bridge records for the attached files. The Data Cloud CRM connector syncs those records and the underlying Salesforce Files into Data Cloud; the bridge records exist for matching a submission to its documents later. No Data Cloud callout is made here.</description>
     <interviewLabel>Index Submission Documents {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Index Submission Documents</label>
     <processMetadataValues>
