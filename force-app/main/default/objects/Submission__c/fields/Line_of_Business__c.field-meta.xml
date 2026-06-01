@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Line_of_Business__c</fullName>
+    <label>Line of Business</label>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>false</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Workers Comp</fullName>
+                <default>true</default>
+                <label>Workers Comp</label>
+            </value>
+            <value>
+                <fullName>General Liability</fullName>
+                <default>false</default>
+                <label>General Liability</label>
+            </value>
+            <value>
+                <fullName>Commercial Property</fullName>
+                <default>false</default>
+                <label>Commercial Property</label>
+            </value>
+            <value>
+                <fullName>Commercial Auto</fullName>
+                <default>false</default>
+                <label>Commercial Auto</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

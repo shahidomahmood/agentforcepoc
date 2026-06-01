@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Review_Priority__c</fullName>
+    <label>Review Priority</label>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value><fullName>High Priority</fullName><default>false</default><label>High Priority</label></value>
+            <value><fullName>Standard Review</fullName><default>false</default><label>Standard Review</label></value>
+            <value><fullName>Low Priority</fullName><default>false</default><label>Low Priority</label></value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

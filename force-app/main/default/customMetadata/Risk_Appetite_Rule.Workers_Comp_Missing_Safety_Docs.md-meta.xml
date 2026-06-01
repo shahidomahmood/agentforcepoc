@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <label>Workers Comp Missing Safety Docs</label>
+    <protected>false</protected>
+    <values>
+        <field>Active__c</field>
+        <value xsi:type="xsd:boolean">true</value>
+    </values>
+    <values>
+        <field>Line_of_Business__c</field>
+        <value xsi:type="xsd:string">Workers Comp</value>
+    </values>
+    <values>
+        <field>Rule_Type__c</field>
+        <value xsi:type="xsd:string">DocumentMissing</value>
+    </values>
+    <values>
+        <field>Field_API_Name__c</field>
+        <value xsi:nil="true"/>
+    </values>
+    <values>
+        <field>Threshold_Value__c</field>
+        <value xsi:nil="true"/>
+    </values>
+    <values>
+        <field>Document_Keyword__c</field>
+        <value xsi:type="xsd:string">Safety</value>
+    </values>
+    <values>
+        <field>Signal_Type__c</field>
+        <value xsi:type="xsd:string">Missing Safety Documentation</value>
+    </values>
+    <values>
+        <field>Severity__c</field>
+        <value xsi:type="xsd:string">Medium</value>
+    </values>
+    <values>
+        <field>Message__c</field>
+        <value xsi:type="xsd:string">No safety program documentation found in submission</value>
+    </values>
+    <values>
+        <field>Recommended_Action__c</field>
+        <value xsi:type="xsd:string">Request current safety program documentation from insured</value>
+    </values>
+    <values>
+        <field>Sort_Order__c</field>
+        <value xsi:type="xsd:decimal">50</value>
+    </values>
+</CustomMetadata>
