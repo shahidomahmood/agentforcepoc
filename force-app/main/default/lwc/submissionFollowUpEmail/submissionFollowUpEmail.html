@@ -1,0 +1,71 @@
+<template>
+    <lightning-card title="Broker Follow-Up Email" icon-name="standard:email">
+
+        <div slot="actions">
+            <lightning-button
+                label="Validate &amp; Draft"
+                icon-name="utility:check"
+                onclick={handleValidate}
+                disabled={isBusy}>
+            </lightning-button>
+        </div>
+
+        <div class="slds-var-p-around_medium">
+
+            <template if:true={isBusy}>
+                <div class="slds-align_absolute-center slds-var-p-vertical_large">
+                    <lightning-spinner alternative-text={busyMessage} size="small"></lightning-spinner>
+                    <p class="slds-text-body_small slds-text-color_weak slds-var-m-top_small">{busyMessage}</p>
+                </div>
+            </template>
+
+            <template if:false={isBusy}>
+
+                <template if:true={completenessStatus}>
+                    <div class={statusBadgeClass}>
+                        <span>{completenessStatus}</span>
+                    </div>
+                </template>
+
+                <template if:true={hasDraft}>
+                    <div class="slds-var-m-bottom_small">
+                        <p class="slds-text-body_small slds-text-color_weak slds-var-m-bottom_x-small">
+                            <strong>To:</strong> {brokerEmail}
+                        </p>
+                    </div>
+                    <lightning-textarea
+                        label="Email Draft"
+                        value={emailDraft}
+                        max-length="32768"
+                        rows="12"
+                        onchange={handleDraftChange}>
+                    </lightning-textarea>
+                    <div class="slds-var-m-top_small">
+                        <lightning-button
+                            label="Send Email"
+                            variant="brand"
+                            icon-name="utility:send"
+                            icon-position="right"
+                            onclick={handleSend}
+                            class="slds-var-m-right_x-small">
+                        </lightning-button>
+                        <lightning-button
+                            label="Save Draft"
+                            onclick={handleSaveDraft}>
+                        </lightning-button>
+                    </div>
+                </template>
+
+                <template if:false={hasDraft}>
+                    <div class="slds-align_absolute-center slds-var-p-vertical_large">
+                        <p class="slds-text-body_regular slds-text-color_weak">
+                            Click "Validate &amp; Draft" to check for missing information and generate a broker email.
+                        </p>
+                    </div>
+                </template>
+
+            </template>
+
+        </div>
+    </lightning-card>
+</template>
