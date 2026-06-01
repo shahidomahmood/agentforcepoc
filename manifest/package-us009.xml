@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Package xmlns="http://soap.sforce.com/2006/04/metadata">
+    <types>
+        <members>SubmissionExtractionAction</members>
+        <members>SubmissionExtractionActionTest</members>
+        <name>ApexClass</name>
+    </types>
+    <types>
+        <members>Submission__c.Broker_Name__c</members>
+        <members>Submission__c.Extraction_Confidence__c</members>
+        <members>Submission__c.Extraction_JSON__c</members>
+        <members>Submission__c.Extraction_Log__c</members>
+        <members>Submission__c.Extraction_Status__c</members>
+        <members>Submission__c.Insured_Name__c</members>
+        <members>Submission__c.Locations__c</members>
+        <members>Submission__c.NAICS_Codes__c</members>
+        <members>Submission__c.Payroll__c</members>
+        <members>Submission__c.Policy_Effective_Date__c</members>
+        <members>Submission__c.Policy_Expiration_Date__c</members>
+        <members>Submission__c.Requested_Coverage__c</members>
+        <name>CustomField</name>
+    </types>
+    <types>
+        <members>Extract_Submission_Data</members>
+        <name>Flow</name>
+    </types>
+    <types>
+        <members>Submission__c-Submission Layout</members>
+        <name>Layout</name>
+    </types>
+    <types>
+        <members>submissionExtractButton</members>
+        <name>LightningComponentBundle</name>
+    </types>
+    <types>
+        <members>Agentforce_POC_Access</members>
+        <name>PermissionSet</name>
+    </types>
+    <types>
+        <members>Submission__c.Extract_with_Agentforce</members>
+        <name>QuickAction</name>
+    </types>
+    <version>64.0</version>
+</Package>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>64.0</apiVersion>
+    <description>Invokes SubmissionExtractionAction to extract structured insurance data from submission documents using Agentforce.</description>
+    <interviewLabel>Extract Submission Data {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Extract Submission Data</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <start>
+        <locationX>176</locationX>
+        <locationY>48</locationY>
+        <connector>
+            <targetReference>Extract_Data</targetReference>
+        </connector>
+    </start>
+    <status>Active</status>
+    <actionCalls>
+        <description>Call Agentforce to extract structured insurance data from submission documents.</description>
+        <name>Extract_Data</name>
+        <label>Extract Data</label>
+        <locationX>176</locationX>
+        <locationY>168</locationY>
+        <actionName>SubmissionExtractionAction</actionName>
+        <actionType>apex</actionType>
+        <inputParameters>
+            <name>submissionId</name>
+            <value>
+                <elementReference>submissionId</elementReference>
+            </value>
+        </inputParameters>
+    </actionCalls>
+    <variables>
+        <name>submissionId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+</Flow>
