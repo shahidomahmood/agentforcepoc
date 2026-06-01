@@ -10,3 +10,7 @@ package.xml
 
 # LWC Jest
 **/__tests__/**
+
+# Placeholder files that require manual Setup configuration — exclude from deploys
+force-app/main/default/flexipages/Submissions_Inbox_Page.flexipage-meta.xml
+force-app/main/default/namedCredentials/DataCloud_Ingestion_API.namedCredential-meta.xml
