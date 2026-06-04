@@ -18,3 +18,7 @@ package.xml
 # Placeholder files that require manual Setup configuration — exclude from deploys
 force-app/main/default/flexipages/Submissions_Inbox_Page.flexipage-meta.xml
 force-app/main/default/namedCredentials/DataCloud_Ingestion_API.namedCredential-meta.xml
+
+# Managed directly in org via Lightning App Builder / Flow Builder.
+# Schema validation and active-flow versioning prevent clean source-driven deploys.
+**/flows/Extract_Submission_Data.flow-meta.xml
