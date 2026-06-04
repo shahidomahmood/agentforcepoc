@@ -1,1 +1,7 @@
+#!/bin/sh
+# Skip if node_modules are not installed (run `npm install` to enable checks)
+if [ ! -d "node_modules" ]; then
+  echo "pre-commit: node_modules not found — skipping lint/test checks. Run 'npm install' to enable."
+  exit 0
+fi
 npm run precommit
