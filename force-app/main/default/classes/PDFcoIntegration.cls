@@ -1,6 +1,6 @@
 public class PDFcoIntegration {
     
-    private static final String API_KEY = 'tearnhardt21@gmail.com_79xrbakYcnQUpmnxvZBAFDMsziN7vP3Tf3LK71RXUDkxPXAmbpghUjewvqBgXzyz';
+    public static final String API_KEY = 'tearnhardt21@gmail.com_79xrbakYcnQUpmnxvZBAFDMsziN7vP3Tf3LK71RXUDkxPXAmbpghUjewvqBgXzyz';
     private static final String API_URL = 'https://api.pdf.co/v1/pdf/edit/add';
     
     public static void addTextToPDF() {

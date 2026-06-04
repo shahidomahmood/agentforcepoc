@@ -1,0 +1,24 @@
+<template>
+    <template if:false={isLoading}>
+        <div class="slds-var-p-around_medium">
+            <p class="slds-text-body_regular slds-var-m-bottom_medium">
+                Extract insured and policy information from the uploaded submission documents using Agentforce.
+            </p>
+            <lightning-button
+                label="Extract with Agentforce"
+                variant="brand"
+                icon-name="utility:einstein"
+                icon-position="left"
+                onclick={handleExtract}>
+            </lightning-button>
+        </div>
+    </template>
+    <template if:true={isLoading}>
+        <div class="slds-align_absolute-center slds-var-p-vertical_large">
+            <lightning-spinner alternative-text="Extracting data..." size="medium"></lightning-spinner>
+            <p class="slds-text-body_regular slds-text-color_weak slds-var-m-top_small">
+                Extracting data with Agentforce&hellip;
+            </p>
+        </div>
+    </template>
+</template>
