@@ -1,5 +1,6 @@
 import { LightningElement, api, wire } from 'lwc';
 import { getRecord, getFieldValue } from 'lightning/uiRecordApi';
+import { refreshApex } from '@salesforce/apex';
 import getSignals from '@salesforce/apex/RiskSignalService.getSignals';
 import RISK_SCORE_FIELD from '@salesforce/schema/Submission__c.Risk_Score__c';
 import APPETITE_SCORE_FIELD from '@salesforce/schema/Submission__c.Appetite_Score__c';
@@ -27,10 +28,20 @@ export default class SubmissionRiskSignals extends LightningElement {
 
     _wiredRecord;
     _wiredSignals;
+    _prevRiskScore = undefined;
 
     @wire(getRecord, { recordId: '$recordId', fields: FIELDS })
     wiredRecord(result) {
         this._wiredRecord = result;
+        if (result.data) {
+            const score = getFieldValue(result.data, RISK_SCORE_FIELD);
+            if (score !== this._prevRiskScore) {
+                this._prevRiskScore = score;
+                if (this._wiredSignals) {
+                    refreshApex(this._wiredSignals);
+                }
+            }
+        }
     }
 
     @wire(getSignals, { submissionId: '$recordId' })
