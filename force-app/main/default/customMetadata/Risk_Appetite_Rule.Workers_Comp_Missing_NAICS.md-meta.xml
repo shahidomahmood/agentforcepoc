@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <label>Workers Comp Missing NAICS</label>
+    <protected>false</protected>
+    <values>
+        <field>Active__c</field>
+        <value xsi:type="xsd:boolean">true</value>
+    </values>
+    <values>
+        <field>Line_of_Business__c</field>
+        <value xsi:type="xsd:string">Workers Comp</value>
+    </values>
+    <values>
+        <field>Rule_Type__c</field>
+        <value xsi:type="xsd:string">FieldBlank</value>
+    </values>
+    <values>
+        <field>Field_API_Name__c</field>
+        <value xsi:type="xsd:string">NAICS_Codes__c</value>
+    </values>
+    <values>
+        <field>Threshold_Value__c</field>
+        <value xsi:nil="true"/>
+    </values>
+    <values>
+        <field>Document_Keyword__c</field>
+        <value xsi:nil="true"/>
+    </values>
+    <values>
+        <field>Signal_Type__c</field>
+        <value xsi:type="xsd:string">NAICS Code Not Provided</value>
+    </values>
+    <values>
+        <field>Severity__c</field>
+        <value xsi:type="xsd:string">High</value>
+    </values>
+    <values>
+        <field>Message__c</field>
+        <value xsi:type="xsd:string">Industry class code missing — appetite cannot be confirmed</value>
+    </values>
+    <values>
+        <field>Recommended_Action__c</field>
+        <value xsi:type="xsd:string">Obtain NAICS/class codes from broker before proceeding</value>
+    </values>
+    <values>
+        <field>Sort_Order__c</field>
+        <value xsi:type="xsd:decimal">30</value>
+    </values>
+</CustomMetadata>
