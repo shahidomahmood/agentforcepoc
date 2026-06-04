@@ -1,3 +1,26 @@
+<<<<<<< HEAD
+# List files or directories below to ignore them when running force:source:push, force:source:pull, and force:source:status
+# More information: https://developer.salesforce.com/docs/atlas.en-us.sfdx_dev.meta/sfdx_dev/sfdx_dev_exclude_source.htm
+#
+
+package.xml
+
+# LWC configuration files
+**/jsconfig.json
+**/.eslintrc.json
+
+# LWC Jest
+**/__tests__/**
+
+# GenAI Prompt Templates must be created manually in Prompt Builder.
+# The type picklist values are org-specific and cannot be deployed via metadata.
+**/genAiPromptTemplates/**
+
+# Managed directly in org via Lightning App Builder / Flow Builder.
+# Schema validation and active-flow versioning prevent clean source-driven deploys.
+**/flexipages/Submissions_Inbox_Page.flexipage-meta.xml
+**/flows/Extract_Submission_Data.flow-meta.xml
+=======
 # List files or directories below to ignore them when running force:source:push, force:source:pull, and force:source:status
 # More information: https://developer.salesforce.com/docs/atlas.en-us.sfdx_dev.meta/sfdx_dev/sfdx_dev_exclude_source.htm
 #

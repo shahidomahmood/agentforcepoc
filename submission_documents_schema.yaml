@@ -1,0 +1,61 @@
+openapi: 3.0.3
+info:
+  title: Submission Documents Ingestion API
+  description: Ingests submission document metadata for the Agentforce POC.
+  version: 1.0.0
+
+paths:
+  /Submission_Document:
+    post:
+      summary: Ingest submission document metadata
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - data
+              properties:
+                data:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/Submission_Document'
+      responses:
+        '202':
+          description: Accepted
+
+components:
+  schemas:
+    Submission_Document:
+      type: object
+      required:
+        - DocumentId
+        - SubmissionId
+        - LastModified
+      properties:
+        DocumentId:
+          type: string
+          description: Salesforce ContentDocumentId. Primary key for upsert.
+        SubmissionId:
+          type: string
+          description: Salesforce Submission__c Id.
+        LastModified:
+          type: string
+          format: date-time
+        SubmissionName:
+          type: string
+        DocumentName:
+          type: string
+        DocumentType:
+          type: string
+        ContentType:
+          type: string
+        FileExtension:
+          type: string
+        FileSize:
+          type: number
+        Metadata:
+          type: string
+        SourceSystem:
+          type: string

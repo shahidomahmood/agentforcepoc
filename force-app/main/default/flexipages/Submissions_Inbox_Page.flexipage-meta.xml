@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <?xml version="1.0" encoding="UTF-8"?>
 <FlexiPage xmlns="http://soap.sforce.com/2006/04/metadata">
     <masterLabel>Submissions Inbox</masterLabel>
@@ -15,3 +16,4 @@
         <type>Region</type>
     </flexiPageRegions>
 </FlexiPage>
+>>>>>>> 10dba6faf68ff0aa8754bc7d338521651f7c448d

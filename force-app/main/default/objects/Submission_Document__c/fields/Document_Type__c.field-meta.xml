@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Document_Type__c</fullName>
+    <label>Document Type</label>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>ACORD 125</fullName>
+                <default>false</default>
+                <label>ACORD 125</label>
+            </value>
+            <value>
+                <fullName>ACORD 130</fullName>
+                <default>false</default>
+                <label>ACORD 130</label>
+            </value>
+            <value>
+                <fullName>Loss Runs</fullName>
+                <default>false</default>
+                <label>Loss Runs</label>
+            </value>
+            <value>
+                <fullName>Application</fullName>
+                <default>false</default>
+                <label>Application</label>
+            </value>
+            <value>
+                <fullName>Supplemental</fullName>
+                <default>false</default>
+                <label>Supplemental</label>
+            </value>
+            <value>
+                <fullName>Other</fullName>
+                <default>true</default>
+                <label>Other</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

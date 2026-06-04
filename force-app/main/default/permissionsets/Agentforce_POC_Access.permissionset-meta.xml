@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
     <description>Grants field-level access to all custom fields for the Agentforce POC objects</description>
+
+    <!-- Submission_Email__c fields -->
     <fieldPermissions>
         <editable>true</editable>
         <field>Submission_Email__c.Attachment_Count__c</field>
@@ -108,7 +110,7 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>Submission__c.Broker_Name__c</field>
+        <field>Submission__c.Indexing_Status__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -123,17 +125,19 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>Submission__c.Extraction_JSON__c</field>
+        <field>Submission__c.Submission_Email__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+
+    <!-- Submission_Document__c fields -->
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Submission_Document__c.Submission__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>Submission__c.Extraction_Log__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Submission__c.Extraction_Status__c</field>
+        <field>Submission_Document__c.Content_Document_Id__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -158,7 +162,7 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>Submission__c.NAICS_Codes__c</field>
+        <field>Submission_Document__c.Indexing_Status__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -224,7 +228,7 @@
         <allowEdit>true</allowEdit>
         <allowRead>true</allowRead>
         <modifyAllRecords>false</modifyAllRecords>
-        <object>Missing_Item__c</object>
+        <object>Submission_Document__c</object>
         <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
     <objectPermissions>
