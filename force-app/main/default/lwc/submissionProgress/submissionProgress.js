@@ -51,17 +51,17 @@ export default class SubmissionProgress extends LightningElement {
     get riskScore()          { return getFieldValue(this._wiredRecord?.data, RISK_SCORE);          }
 
     // ── Step 1: Extract Data ────────────────────────────────────────────────
-    get step1Done()       { return this.extractionStatus === 'Completed'; }
-    get step1Error()      { return this.extractionStatus === 'Failed'; }
+    get step1Done()       { return this.extractionStatus === 'Extraction Complete'; }
+    get step1Error()      { return this.extractionStatus === 'Extraction Failed'; }
     get _step1State()     { return this.step1Done ? 'complete' : this.step1Error ? 'error' : 'current'; }
     get step1CircleCls()  { return CIRCLE[this._step1State]; }
     get step1TitleCls()   { return TITLE[this._step1State]; }
     get step1BadgeCls()   { return BADGE[this._step1State]; }
     get step1Num()        { return this.step1Done ? '✓' : this.step1Error ? '✕' : '1'; }
     get step1StatusLabel() {
-        if (this.step1Done)  return 'Completed';
+        if (this.step1Done)  return 'Extraction Complete';
         if (this.step1Error) return 'Failed — click to retry';
-        if (this.extractionStatus === 'In Progress') return 'In Progress';
+        if (this.extractionStatus === 'Extraction Pending') return 'Extraction Pending';
         return 'Not Started';
     }
     get step1BtnLabel()   { return this.step1Done ? 'Re-extract' : this.step1Error ? 'Retry Extraction' : 'Extract with Agentforce'; }
