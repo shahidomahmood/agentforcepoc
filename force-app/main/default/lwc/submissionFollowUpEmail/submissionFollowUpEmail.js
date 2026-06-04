@@ -2,7 +2,6 @@ import { LightningElement, api, wire, track } from 'lwc';
 import { getRecord, getFieldValue } from 'lightning/uiRecordApi';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import { refreshApex } from '@salesforce/apex';
-import validateSubmission from '@salesforce/apex/SubmissionValidationAction.validateSubmission';
 import sendFollowUpEmail from '@salesforce/apex/SubmissionValidationAction.sendFollowUpEmail';
 import saveDraft from '@salesforce/apex/SubmissionValidationAction.saveDraft';
 
@@ -54,35 +53,6 @@ export default class SubmissionFollowUpEmail extends LightningElement {
 
     handleDraftChange(event) {
         this.emailDraft = event.target.value;
-    }
-
-    handleValidate() {
-        this.isBusy      = true;
-        this.busyMessage = 'Validating submission…';
-
-        validateSubmission({ submissionId: this.recordId })
-            .then(missingCount => {
-                const msg = missingCount === 0
-                    ? 'Submission is complete — no missing information found.'
-                    : missingCount + ' missing item(s) found. Email draft generated.';
-                this.dispatchEvent(new ShowToastEvent({
-                    title:   missingCount === 0 ? 'Complete' : 'Missing Information Detected',
-                    message: msg,
-                    variant: missingCount === 0 ? 'success' : 'warning'
-                }));
-                return refreshApex(this._wiredRecord);
-            })
-            .catch(error => {
-                this.dispatchEvent(new ShowToastEvent({
-                    title:   'Validation Failed',
-                    message: error?.body?.message ?? 'An unexpected error occurred.',
-                    variant: 'error',
-                    mode:    'sticky'
-                }));
-            })
-            .finally(() => {
-                this.isBusy = false;
-            });
     }
 
     handleSaveDraft() {
