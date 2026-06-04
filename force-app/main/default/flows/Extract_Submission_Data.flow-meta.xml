@@ -18,7 +18,7 @@
             <targetReference>Extract_Data</targetReference>
         </connector>
     </start>
-    <status>Active</status>
+    <status>Draft</status>
     <actionCalls>
         <description>Call Agentforce to extract structured insurance data from submission documents.</description>
         <name>Extract_Data</name>

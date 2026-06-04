@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <FlexiPage xmlns="http://soap.sforce.com/2006/04/metadata">
+    <masterLabel>Submissions Inbox</masterLabel>
+    <pageType>AppPage</pageType>
+    <template>
+        <name>lightning_cms_plus_one_region</name>
+    </template>
     <flexiPageRegions>
         <itemInstances>
             <componentInstance>
@@ -9,9 +14,4 @@
         <name>main</name>
         <type>Region</type>
     </flexiPageRegions>
-    <masterLabel>Submissions Inbox</masterLabel>
-    <pageType>AppPage</pageType>
-    <template>
-        <name>lightning_cms_plus_one_region</name>
-    </template>
 </FlexiPage>
