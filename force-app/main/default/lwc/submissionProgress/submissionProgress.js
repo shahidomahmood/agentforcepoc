@@ -1,7 +1,6 @@
 import { LightningElement, api, wire, track } from 'lwc';
-import { getRecord, getFieldValue } from 'lightning/uiRecordApi';
+import { getRecord, getFieldValue, notifyRecordUpdateAvailable } from 'lightning/uiRecordApi';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
-import { refreshApex } from '@salesforce/apex';
 
 // Requires US-009, US-010, US-011 to be deployed before this component is active
 import extractData        from '@salesforce/apex/SubmissionExtractionAction.extractData';
@@ -116,7 +115,7 @@ export default class SubmissionProgress extends LightningElement {
     handleExtract() {
         this.isLoadingExtract = true;
         extractData({ submissionId: this.recordId })
-            .then(() => refreshApex(this._wiredRecord))
+            .then(() => notifyRecordUpdateAvailable([{ recordId: this.recordId }]))
             .then(() => this._toast('Extraction Complete', 'Data extracted from submission documents.', 'success'))
             .catch(e  => this._toast('Extraction Failed', e?.body?.message ?? 'Unexpected error.', 'error', 'sticky'))
             .finally(() => { this.isLoadingExtract = false; });
@@ -130,7 +129,7 @@ export default class SubmissionProgress extends LightningElement {
                     ? 'Submission is complete — no missing items.'
                     : `${count} missing item(s) found. Email draft generated.`;
                 this._toast(count === 0 ? 'Complete' : 'Missing Items Found', msg, count === 0 ? 'success' : 'warning');
-                return refreshApex(this._wiredRecord);
+                return notifyRecordUpdateAvailable([{ recordId: this.recordId }]);
             })
             .catch(e => this._toast('Validation Failed', e?.body?.message ?? 'Unexpected error.', 'error', 'sticky'))
             .finally(() => { this.isLoadingValidate = false; });
@@ -139,7 +138,7 @@ export default class SubmissionProgress extends LightningElement {
     handleRisk() {
         this.isLoadingRisk = true;
         evaluateRisk({ submissionId: this.recordId })
-            .then(() => refreshApex(this._wiredRecord))
+            .then(() => notifyRecordUpdateAvailable([{ recordId: this.recordId }]))
             .then(() => this._toast('Risk Evaluation Complete', 'Risk signals and scores updated.', 'success'))
             .catch(e  => this._toast('Evaluation Failed', e?.body?.message ?? 'Unexpected error.', 'error', 'sticky'))
             .finally(() => { this.isLoadingRisk = false; });
