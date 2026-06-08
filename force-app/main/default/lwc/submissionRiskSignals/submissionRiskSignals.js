@@ -1,8 +1,6 @@
-import { LightningElement, api, wire, track } from 'lwc';
+import { LightningElement, api, wire } from 'lwc';
 import { getRecord, getFieldValue } from 'lightning/uiRecordApi';
 import { refreshApex } from '@salesforce/apex';
-import { ShowToastEvent } from 'lightning/platformShowToastEvent';
-import evaluateRisk from '@salesforce/apex/RiskSignalService.evaluateRisk';
 import getSignals from '@salesforce/apex/RiskSignalService.getSignals';
 import RISK_SCORE_FIELD from '@salesforce/schema/Submission__c.Risk_Score__c';
 import APPETITE_SCORE_FIELD from '@salesforce/schema/Submission__c.Appetite_Score__c';
@@ -27,14 +25,23 @@ const BADGE_CSS = {
 
 export default class SubmissionRiskSignals extends LightningElement {
     @api recordId;
-    @track isLoading = false;
 
     _wiredRecord;
     _wiredSignals;
+    _prevRiskScore = undefined;
 
     @wire(getRecord, { recordId: '$recordId', fields: FIELDS })
     wiredRecord(result) {
         this._wiredRecord = result;
+        if (result.data) {
+            const score = getFieldValue(result.data, RISK_SCORE_FIELD);
+            if (score !== this._prevRiskScore) {
+                this._prevRiskScore = score;
+                if (this._wiredSignals) {
+                    refreshApex(this._wiredSignals);
+                }
+            }
+        }
     }
 
     @wire(getSignals, { submissionId: '$recordId' })
@@ -87,31 +94,4 @@ export default class SubmissionRiskSignals extends LightningElement {
         return 'score-tile';
     }
 
-    handleEvaluate() {
-        this.isLoading = true;
-        evaluateRisk({ submissionId: this.recordId })
-            .then(() => Promise.all([
-                refreshApex(this._wiredRecord),
-                refreshApex(this._wiredSignals)
-            ]))
-            .then(() => {
-                this.dispatchEvent(new ShowToastEvent({
-                    title:   'Risk Evaluation Complete',
-                    message: 'Risk signals and scores have been updated.',
-                    variant: 'success'
-                }));
-            })
-            .catch(error => {
-                const msg = error?.body?.message ?? 'An unexpected error occurred.';
-                this.dispatchEvent(new ShowToastEvent({
-                    title:   'Evaluation Failed',
-                    message: msg,
-                    variant: 'error',
-                    mode:    'sticky'
-                }));
-            })
-            .finally(() => {
-                this.isLoading = false;
-            });
-    }
 }

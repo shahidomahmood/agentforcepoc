@@ -1,0 +1,95 @@
+<template>
+    <lightning-card title="Submission Workflow" icon-name="utility:flow">
+        <div class="slds-var-p-horizontal_medium slds-var-p-bottom_medium slds-var-p-top_x-small">
+
+            <div class="track">
+
+                <!-- ── Step 1: Extract Data ──────────────────────────────── -->
+                <div class="step">
+                    <div class={step1CircleCls}><span>{step1Num}</span></div>
+                    <p class={step1TitleCls}>Extract Data</p>
+                    <p class="step-desc">Parse insured &amp; policy info from attached documents</p>
+                    <span class={step1BadgeCls}>{step1StatusLabel}</span>
+                    <div class="step-action">
+                        <template if:false={isLoadingExtract}>
+                            <lightning-button
+                                label={step1BtnLabel}
+                                variant={step1BtnVariant}
+                                icon-name="utility:einstein"
+                                icon-position="left"
+                                onclick={handleExtract}>
+                            </lightning-button>
+                        </template>
+                        <template if:true={isLoadingExtract}>
+                            <lightning-spinner size="small" alternative-text="Extracting..."></lightning-spinner>
+                            <span class="slds-text-body_small slds-text-color_weak">Extracting&hellip;</span>
+                        </template>
+                    </div>
+                </div>
+
+                <div class={conn12}></div>
+
+                <!-- ── Step 2: Check Missing Info ────────────────────────── -->
+                <div class="step">
+                    <div class={step2CircleCls}><span>{step2Num}</span></div>
+                    <p class={step2TitleCls}>Check Missing Info</p>
+                    <p class="step-desc">Validate completeness &amp; draft broker follow-up</p>
+                    <span class={step2BadgeCls}>{step2StatusLabel}</span>
+                    <div class="step-action">
+                        <template if:false={isLoadingValidate}>
+                            <lightning-button
+                                label="Validate &amp; Draft"
+                                variant={step2BtnVariant}
+                                icon-name="utility:check"
+                                icon-position="left"
+                                disabled={step2Locked}
+                                onclick={handleValidate}>
+                            </lightning-button>
+                        </template>
+                        <template if:true={isLoadingValidate}>
+                            <lightning-spinner size="small" alternative-text="Validating..."></lightning-spinner>
+                            <span class="slds-text-body_small slds-text-color_weak">Validating&hellip;</span>
+                        </template>
+                    </div>
+                </div>
+
+                <div class={conn23}></div>
+
+                <!-- ── Step 3: Evaluate Risk ─────────────────────────────── -->
+                <div class="step">
+                    <div class={step3CircleCls}><span>{step3Num}</span></div>
+                    <p class={step3TitleCls}>Evaluate Risk</p>
+                    <p class="step-desc">Score appetite rules &amp; generate underwriter brief</p>
+                    <span class={step3BadgeCls}>{step3StatusLabel}</span>
+                    <div class="step-action">
+                        <template if:false={isLoadingRisk}>
+                            <lightning-button
+                                label="Evaluate Risk"
+                                variant={step3BtnVariant}
+                                icon-name="utility:einstein"
+                                icon-position="left"
+                                disabled={step3Locked}
+                                onclick={handleRisk}>
+                            </lightning-button>
+                        </template>
+                        <template if:true={isLoadingRisk}>
+                            <lightning-spinner size="small" alternative-text="Evaluating..."></lightning-spinner>
+                            <span class="slds-text-body_small slds-text-color_weak">Evaluating&hellip;</span>
+                        </template>
+                    </div>
+                </div>
+
+                <div class={conn34}></div>
+
+                <!-- ── Step 4: Ready for Review ──────────────────────────── -->
+                <div class="step">
+                    <div class={step4CircleCls}><span>{step4Num}</span></div>
+                    <p class={step4TitleCls}>Ready for Review</p>
+                    <p class="step-desc">Submission triage complete</p>
+                    <span class={step4BadgeCls}>{step4StatusLabel}</span>
+                </div>
+
+            </div>
+        </div>
+    </lightning-card>
+</template>

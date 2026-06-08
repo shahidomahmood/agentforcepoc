@@ -1,4 +1,5 @@
 import { LightningElement, api } from 'lwc';
+import { notifyRecordUpdateAvailable } from 'lightning/uiRecordApi';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import { CloseActionScreenEvent } from 'lightning/actions';
 import extractData from '@salesforce/apex/SubmissionExtractionAction.extractData';
@@ -12,6 +13,7 @@ export default class SubmissionExtractButton extends LightningElement {
 
         extractData({ submissionId: this.recordId })
             .then(() => {
+                notifyRecordUpdateAvailable([{ recordId: this.recordId }]);
                 this.dispatchEvent(new ShowToastEvent({
                     title:   'Extraction Complete',
                     message: 'Agentforce successfully extracted data from the submission documents.',
