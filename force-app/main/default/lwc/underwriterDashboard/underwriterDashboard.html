@@ -1,0 +1,210 @@
+<template>
+    <lightning-card title="Underwriter Dashboard" icon-name="standard:dashboard">
+        <div slot="actions">
+            <lightning-button
+                label="Refresh"
+                icon-name="utility:refresh"
+                onclick={handleRefresh}>
+            </lightning-button>
+        </div>
+
+        <div class="slds-var-p-around_medium">
+
+            <!-- Loading state -->
+            <template if:true={isLoading}>
+                <div class="slds-align_absolute-center slds-var-p-vertical_x-large">
+                    <lightning-spinner alternative-text="Loading dashboard" size="medium"></lightning-spinner>
+                </div>
+            </template>
+
+            <template if:false={isLoading}>
+
+                <!-- Error state -->
+                <template if:true={hasError}>
+                    <div class="slds-notify slds-notify_alert slds-alert_error" role="alert">
+                        <span class="slds-assistive-text">error</span>
+                        <h2>Failed to load dashboard data. Please refresh the page.</h2>
+                    </div>
+                </template>
+
+                <template if:false={hasError}>
+
+                    <!-- ── KPI Cards ─────────────────────────────────────────── -->
+                    <div class="slds-grid slds-gutters slds-var-m-bottom_medium">
+                        <div class="slds-col slds-size_1-of-6">
+                            <div class="kpi-card">
+                                <div class="kpi-value">{totalSubmissions}</div>
+                                <div class="kpi-label">Total Submissions</div>
+                            </div>
+                        </div>
+                        <div class="slds-col slds-size_1-of-6">
+                            <div class="kpi-card kpi-info">
+                                <div class="kpi-value">{newSubmissions}</div>
+                                <div class="kpi-label">New (Last 7 Days)</div>
+                            </div>
+                        </div>
+                        <div class="slds-col slds-size_1-of-6">
+                            <div class="kpi-card">
+                                <div class="kpi-value">{documentsReceived}</div>
+                                <div class="kpi-label">Documents Received</div>
+                            </div>
+                        </div>
+                        <div class="slds-col slds-size_1-of-6">
+                            <div class="kpi-card kpi-success">
+                                <div class="kpi-value">{pendingReview}</div>
+                                <div class="kpi-label">Pending Review</div>
+                            </div>
+                        </div>
+                        <div class="slds-col slds-size_1-of-6">
+                            <div class="kpi-card kpi-warning">
+                                <div class="kpi-value">{missingInformation}</div>
+                                <div class="kpi-label">Missing Information</div>
+                            </div>
+                        </div>
+                        <div class="slds-col slds-size_1-of-6">
+                            <div class="kpi-card kpi-critical">
+                                <div class="kpi-value">{highRiskSubmissions}</div>
+                                <div class="kpi-label">High Risk</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ── Row 1: Intake by Day + Status Breakdown ────────────── -->
+                    <div class="slds-grid slds-gutters slds-var-m-bottom_medium">
+                        <div class="slds-col slds-size_1-of-2">
+                            <div class="chart-card">
+                                <h3 class="slds-text-heading_small slds-var-m-bottom_small">
+                                    New Submissions by Day &mdash; Last 30 Days
+                                </h3>
+                                <template if:true={hasIntakeData}>
+                                    <template for:each={intakeByDay} for:item="entry">
+                                        <div key={entry.label} class="chart-row">
+                                            <span class="chart-label">{entry.label}</span>
+                                            <div class="chart-track">
+                                                <div class={entry.barCss} style={entry.barStyle}></div>
+                                            </div>
+                                            <span class="chart-count">{entry.count}</span>
+                                        </div>
+                                    </template>
+                                </template>
+                                <template if:false={hasIntakeData}>
+                                    <p class="slds-text-body_small slds-text-color_weak">
+                                        No submissions in the last 30 days.
+                                    </p>
+                                </template>
+                            </div>
+                        </div>
+                        <div class="slds-col slds-size_1-of-2">
+                            <div class="chart-card">
+                                <h3 class="slds-text-heading_small slds-var-m-bottom_small">
+                                    Submission Status Breakdown
+                                </h3>
+                                <template for:each={statusBreakdown} for:item="entry">
+                                    <div key={entry.label} class="chart-row">
+                                        <span class="chart-label-wide">{entry.label}</span>
+                                        <div class="chart-track">
+                                            <div class={entry.barCss} style={entry.barStyle}></div>
+                                        </div>
+                                        <span class="chart-count">{entry.count}</span>
+                                    </div>
+                                </template>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ── Row 2: Document Insights + Risk Overview ───────────── -->
+                    <div class="slds-grid slds-gutters slds-var-m-bottom_medium">
+                        <div class="slds-col slds-size_1-of-2">
+                            <div class="chart-card">
+                                <h3 class="slds-text-heading_small slds-var-m-bottom_x-small">
+                                    Document Processing Insights
+                                </h3>
+                                <p class="slds-text-body_small slds-text-color_weak slds-var-m-bottom_small">
+                                    Total received: {documentsReceived}
+                                </p>
+                                <template for:each={documentsByType} for:item="entry">
+                                    <div key={entry.label} class="chart-row">
+                                        <span class="chart-label-wide">{entry.label}</span>
+                                        <div class="chart-track">
+                                            <div class={entry.barCss} style={entry.barStyle}></div>
+                                        </div>
+                                        <span class="chart-count">{entry.count}</span>
+                                    </div>
+                                </template>
+                            </div>
+                        </div>
+                        <div class="slds-col slds-size_1-of-2">
+                            <div class="chart-card">
+                                <h3 class="slds-text-heading_small slds-var-m-bottom_small">
+                                    Risk Signals Overview
+                                </h3>
+                                <div class="slds-grid slds-gutters">
+                                    <template for:each={riskDistribution} for:item="bucket">
+                                        <div key={bucket.label} class="slds-col slds-size_1-of-3">
+                                            <div class={bucket.tileCss}>
+                                                <div class="risk-count">{bucket.count}</div>
+                                                <div class="risk-label">{bucket.label}</div>
+                                            </div>
+                                        </div>
+                                    </template>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ── Missing Information Queue ──────────────────────────── -->
+                    <div class="slds-var-m-bottom_medium">
+                        <div class="chart-card">
+                            <h3 class="slds-text-heading_small slds-var-m-bottom_small">
+                                <lightning-icon
+                                    icon-name="utility:warning"
+                                    size="x-small"
+                                    class="slds-var-m-right_x-small">
+                                </lightning-icon>
+                                Missing Information Queue
+                            </h3>
+                            <template if:true={hasMissingItems}>
+                                <lightning-datatable
+                                    key-field="submissionId"
+                                    data={missingInfoQueue}
+                                    columns={missingColumns}
+                                    hide-checkbox-column
+                                    onrowaction={handleRowAction}>
+                                </lightning-datatable>
+                            </template>
+                            <template if:false={hasMissingItems}>
+                                <p class="slds-text-body_regular slds-text-color_weak">
+                                    No submissions with outstanding missing information.
+                                </p>
+                            </template>
+                        </div>
+                    </div>
+
+                    <!-- ── Recent Submission Activity ─────────────────────────── -->
+                    <div class="chart-card">
+                        <h3 class="slds-text-heading_small slds-var-m-bottom_small">
+                            Recent Submission Activity
+                        </h3>
+                        <template if:true={hasRecentItems}>
+                            <lightning-datatable
+                                key-field="submissionId"
+                                data={recentActivity}
+                                columns={recentColumns}
+                                hide-checkbox-column
+                                onrowaction={handleRowAction}>
+                            </lightning-datatable>
+                        </template>
+                        <template if:false={hasRecentItems}>
+                            <p class="slds-text-body_regular slds-text-color_weak">
+                                No submissions found.
+                            </p>
+                        </template>
+                    </div>
+
+                </template>
+
+            </template>
+
+        </div>
+    </lightning-card>
+</template>
