@@ -3,14 +3,14 @@
     <flexiPageRegions>
         <itemInstances>
             <componentInstance>
-                <componentName>underwriterDashboard</componentName>
-                <identifier>c_underwriterDashboard</identifier>
+                <componentName>submissionsInbox</componentName>
+                <identifier>c_submissionsInbox</identifier>
             </componentInstance>
         </itemInstances>
         <name>main</name>
         <type>Region</type>
     </flexiPageRegions>
-    <masterLabel>Underwriter Dashboard</masterLabel>
+    <masterLabel>Submissions Inbox</masterLabel>
     <template>
         <name>flexipage:defaultAppHomeTemplate</name>
     </template>
