@@ -21,7 +21,8 @@ predictable.
 
 ### Step 0 — Prerequisites
 - Data Library is provisioned.
-- Note the **retriever API name** for that Data Library: `__________________`.
+- **Retriever API name** for that Data Library: `File_ADL_AgentforcePOC_D_1Cx_vxC3003c154`
+  (insert this retriever into the prompt template in Step 1).
 - **POC workaround (no submission scoping needed):** the library holds **only the current
   submission's documents** at a time. Before processing an email, **clear the library and
   load just the documents from that email**. Because the library only ever contains one
