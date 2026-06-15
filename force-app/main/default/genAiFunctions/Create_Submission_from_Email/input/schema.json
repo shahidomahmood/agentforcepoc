@@ -1,0 +1,48 @@
+{
+  "unevaluatedProperties" : false,
+  "properties" : {
+    "brokerAgencyName" : {
+      "title" : "Broker Agency Name",
+      "description" : "Name of the brokerage or agency submitting the risk",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    },
+    "effectiveDate" : {
+      "title" : "Desired Effective Date",
+      "description" : "Requested policy effective date parsed from the email",
+      "lightning:type" : "lightning__dateType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    },
+    "insuredName" : {
+      "title" : "Insured Name",
+      "description" : "Name of the insured business extracted from the email subject or body",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    },
+    "lineOfBusiness" : {
+      "title" : "Line of Business",
+      "description" : "Insurance line of business (e.g. WC for Workers Compensation)",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    },
+    "senderEmail" : {
+      "title" : "Sender Email",
+      "description" : "Email address of the sender",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    },
+    "senderName" : {
+      "title" : "Sender Name",
+      "description" : "Full name of the broker or agent who sent the email",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    }
+  },
+  "lightning:type" : "lightning__objectType"
+}
