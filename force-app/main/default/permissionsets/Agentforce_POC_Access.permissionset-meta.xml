@@ -2,6 +2,12 @@
 <PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
     <description>Grants field-level access to all custom fields for the Agentforce POC objects</description>
 
+    <!-- Apex class access for the agent's service user (RAG extraction action) -->
+    <classAccesses>
+        <apexClass>ExtractSubmissionDataRAGAction</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+
     <!-- Submission_Email__c fields -->
     <fieldPermissions>
         <editable>true</editable>
@@ -218,6 +224,32 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Submission__c.Submission_Email__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <!-- Submission__c extraction fields written by the RAG agent action -->
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Submission__c.Broker_Name__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Submission__c.NAICS_Codes__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Submission__c.Extraction_JSON__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Submission__c.Extraction_Status__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Submission__c.Extraction_Log__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <hasActivationRequired>false</hasActivationRequired>
