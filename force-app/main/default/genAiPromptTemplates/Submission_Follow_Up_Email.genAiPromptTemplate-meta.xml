@@ -20,6 +20,6 @@ Write a concise, professional email:
 Return only the email body text, no extra commentary.</content>
         <status>Published</status>
     </templateVersions>
-    <type>SalesEmail</type>
+    <type>Flex</type>
     <visibility>Global</visibility>
 </GenAiPromptTemplate>
