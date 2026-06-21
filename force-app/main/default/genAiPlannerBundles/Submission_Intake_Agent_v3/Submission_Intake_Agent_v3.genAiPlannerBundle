@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenAiPlannerBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>New agent descriptionAnalyze insurance submission packages, extract key underwriting data, identify missing information, classify documents, generate broker follow-up drafts, and provide risk assessment insights.</description>
+    <localTopicLinks>
+        <genAiPluginName>Evaluate_Risk_16jg5000000dSAv</genAiPluginName>
+    </localTopicLinks>
+    <localTopicLinks>
+        <genAiPluginName>Submission_Data_Extraction_16jg5000000dSAv</genAiPluginName>
+    </localTopicLinks>
+    <localTopicLinks>
+        <genAiPluginName>Validate_Draft_Email_16jg5000000dSAv</genAiPluginName>
+    </localTopicLinks>
+    <localTopicLinks>
+        <genAiPluginName>agent_router_16jg5000000dSAv</genAiPluginName>
+    </localTopicLinks>
+    <localTopicLinks>
+        <genAiPluginName>ambiguous_question_16jg5000000dSAv</genAiPluginName>
+    </localTopicLinks>
+    <localTopicLinks>
+        <genAiPluginName>escalation_16jg5000000dSAv</genAiPluginName>
+    </localTopicLinks>
+    <localTopicLinks>
+        <genAiPluginName>off_topic_16jg5000000dSAv</genAiPluginName>
+    </localTopicLinks>
+    <localTopics>
+        <fullName>escalation_16jg5000000dSAv</fullName>
+        <canEscalate>false</canEscalate>
+        <description>Handles requests from users who want to transfer or escalate their conversation to a live human agent.</description>
+        <developerName>escalation_16jg5000000dSAv</developerName>
+        <genAiPluginInstructions>
+            <description>You are an AI Agent.</description>
+            <developerName>instruction0_179g5000000yYTX</developerName>
+            <language>en_US</language>
+            <masterLabel>instruction0_179g5000000yYTX</masterLabel>
+            <sortOrder>1</sortOrder>
+        </genAiPluginInstructions>
+        <language>en_US</language>
+        <localDeveloperName>escalation</localDeveloperName>
+        <masterLabel>Escalation</masterLabel>
+        <pluginType>Topic</pluginType>
+    </localTopics>
+    <localTopics>
+        <fullName>ambiguous_question_16jg5000000dSAv</fullName>
+        <canEscalate>false</canEscalate>
+        <description>Redirect conversation to relevant topics when user request is too ambiguous</description>
+        <developerName>ambiguous_question_16jg5000000dSAv</developerName>
+        <genAiPluginInstructions>
+            <description>You are an AI Agent.</description>
+            <developerName>instruction0_179g5000000yYTW</developerName>
+            <language>en_US</language>
+            <masterLabel>instruction0_179g5000000yYTW</masterLabel>
+            <sortOrder>1</sortOrder>
+        </genAiPluginInstructions>
+        <language>en_US</language>
+        <localDeveloperName>ambiguous_question</localDeveloperName>
+        <masterLabel>Ambiguous Question</masterLabel>
+        <pluginType>Topic</pluginType>
+    </localTopics>
+    <localTopics>
+        <fullName>off_topic_16jg5000000dSAv</fullName>
+        <canEscalate>false</canEscalate>
+        <description>Redirect conversation to relevant topics when user request goes off-topic</description>
+        <developerName>off_topic_16jg5000000dSAv</developerName>
+        <genAiPluginInstructions>
+            <description>You are an AI Agent.</description>
+            <developerName>instruction0_179g5000000yYTV</developerName>
+            <language>en_US</language>
+            <masterLabel>instruction0_179g5000000yYTV</masterLabel>
+            <sortOrder>1</sortOrder>
+        </genAiPluginInstructions>
+        <language>en_US</language>
+        <localDeveloperName>off_topic</localDeveloperName>
+        <masterLabel>Off Topic</masterLabel>
+        <pluginType>Topic</pluginType>
+    </localTopics>
+    <localTopics>
+        <fullName>agent_router_16jg5000000dSAv</fullName>
+        <canEscalate>false</canEscalate>
+        <description>Welcome the user and determine the appropriate subagent based on user input</description>
+        <developerName>agent_router_16jg5000000dSAv</developerName>
+        <genAiPluginInstructions>
+            <description>You are an AI Agent.
+
+{{state.AgentScriptInternal_agent_instructions}}</description>
+            <developerName>instruction0_179g5000000yYTU</developerName>
+            <language>en_US</language>
+            <masterLabel>instruction0_179g5000000yYTU</masterLabel>
+            <sortOrder>1</sortOrder>
+        </genAiPluginInstructions>
+        <language>en_US</language>
+        <localDeveloperName>agent_router</localDeveloperName>
+        <masterLabel>Agent Router</masterLabel>
+        <pluginType>Topic</pluginType>
+    </localTopics>
+    <localTopics>
+        <fullName>Evaluate_Risk_16jg5000000dSAv</fullName>
+        <canEscalate>false</canEscalate>
+        <description>Assess the risk of an insurance submission against underwriting appetite rules and an external risk-scoring service, record risk signals, and produce an underwriter risk brief with risk score, appetite score and review priority. Use when the user wants to evaluate, score, or summarize the risk of a submission.</description>
+        <developerName>Evaluate_Risk_16jg5000000dSAv</developerName>
+        <genAiPluginInstructions>
+            <description>You are an AI Agent.</description>
+            <developerName>instruction0_179g5000000yYTT</developerName>
+            <language>en_US</language>
+            <masterLabel>instruction0_179g5000000yYTT</masterLabel>
+            <sortOrder>1</sortOrder>
+        </genAiPluginInstructions>
+        <language>en_US</language>
+        <localActionLinks>
+            <functionName>Evaluate_Submission_Risk_179g5000000yYTT</functionName>
+        </localActionLinks>
+        <localActions>
+            <fullName>Evaluate_Submission_Risk_179g5000000yYTT</fullName>
+            <description>Scores an insurance submission against the configured risk-appetite rules and an external risk-scoring service, records risk signals, writes the risk and appetite scores and review priority to the submission, and drafts an underwriter risk brief. Use when the user asks to assess, score, or evaluate the risk of a submission, or asks for a risk summary. Requires the submission&apos;s record Id.</description>
+            <developerName>Evaluate_Submission_Risk_179g5000000yYTT</developerName>
+            <invocationTarget>EvaluateRiskAction</invocationTarget>
+            <invocationTargetType>apex</invocationTargetType>
+            <isConfirmationRequired>false</isConfirmationRequired>
+            <isIncludeInProgressIndicator>true</isIncludeInProgressIndicator>
+            <localDeveloperName>Evaluate_Submission_Risk</localDeveloperName>
+            <masterLabel>Evaluate Submission Risk</masterLabel>
+            <progressIndicatorMessage>Evaluating submission risk…</progressIndicatorMessage>
+        </localActions>
+        <localDeveloperName>Evaluate_Risk</localDeveloperName>
+        <masterLabel>Evaluate Risk</masterLabel>
+        <pluginType>Topic</pluginType>
+    </localTopics>
+    <localTopics>
+        <fullName>Submission_Data_Extraction_16jg5000000dSAv</fullName>
+        <canEscalate>false</canEscalate>
+        <description>Extract structured underwriting data from insurance submission documents stored in the Data Library and update submission records.</description>
+        <developerName>Submission_Data_Extraction_16jg5000000dSAv</developerName>
+        <genAiPluginInstructions>
+            <description>You are an AI Agent.</description>
+            <developerName>instruction0_179g5000000yYTS</developerName>
+            <language>en_US</language>
+            <masterLabel>instruction0_179g5000000yYTS</masterLabel>
+            <sortOrder>1</sortOrder>
+        </genAiPluginInstructions>
+        <language>en_US</language>
+        <localActionLinks>
+            <functionName>Extract_Submission_Data_179g5000000yYTS</functionName>
+        </localActionLinks>
+        <localActions>
+            <fullName>Extract_Submission_Data_179g5000000yYTS</fullName>
+            <description>Extracts structured underwriting data from a submission&apos;s documents via RAG over the Data Library and saves it to the
+Submission record. Use when the user asks to extract, read, or pull data from a submission&apos;s documents. Requires the
+submission&apos;s record Id.</description>
+            <developerName>Extract_Submission_Data_179g5000000yYTS</developerName>
+            <invocationTarget>ExtractSubmissionDataRAGAction</invocationTarget>
+            <invocationTargetType>apex</invocationTargetType>
+            <isConfirmationRequired>false</isConfirmationRequired>
+            <isIncludeInProgressIndicator>true</isIncludeInProgressIndicator>
+            <localDeveloperName>Extract_Submission_Data</localDeveloperName>
+            <masterLabel>Extract Submission Data</masterLabel>
+            <progressIndicatorMessage>Extracting submission data…</progressIndicatorMessage>
+        </localActions>
+        <localDeveloperName>Submission_Data_Extraction</localDeveloperName>
+        <masterLabel>Submission Data Extraction</masterLabel>
+        <pluginType>Topic</pluginType>
+    </localTopics>
+    <localTopics>
+        <fullName>Validate_Draft_Email_16jg5000000dSAv</fullName>
+        <canEscalate>false</canEscalate>
+        <description>Check an insurance submission for missing or incomplete information against underwriting requirements, and draft a broker follow-up email requesting anything that&apos;s missing.</description>
+        <developerName>Validate_Draft_Email_16jg5000000dSAv</developerName>
+        <genAiPluginInstructions>
+            <description>You are an AI Agent.</description>
+            <developerName>instruction0_179g5000000yYTR</developerName>
+            <language>en_US</language>
+            <masterLabel>instruction0_179g5000000yYTR</masterLabel>
+            <sortOrder>1</sortOrder>
+        </genAiPluginInstructions>
+        <language>en_US</language>
+        <localActionLinks>
+            <functionName>Validate_Draft_Email_179g5000000yYTR</functionName>
+        </localActionLinks>
+        <localActions>
+            <fullName>Validate_Draft_Email_179g5000000yYTR</fullName>
+            <description>Checks an insurance submission&apos;s completeness against the configured underwriting requirements, records any missing items on the submission, and drafts a broker follow-up email when information  is missing. Use when the user asks to validate a submission, check completeness, or find out what information is missing or incomplete. Requires the submission&apos;s record Id.</description>
+            <developerName>Validate_Draft_Email_179g5000000yYTR</developerName>
+            <invocationTarget>SubmissionValidationAction</invocationTarget>
+            <invocationTargetType>apex</invocationTargetType>
+            <isConfirmationRequired>false</isConfirmationRequired>
+            <isIncludeInProgressIndicator>true</isIncludeInProgressIndicator>
+            <localDeveloperName>Validate_Draft_Email</localDeveloperName>
+            <masterLabel>Validate &amp; Draft Email</masterLabel>
+            <progressIndicatorMessage>Checking submission for missing information…</progressIndicatorMessage>
+        </localActions>
+        <localDeveloperName>Validate_Draft_Email</localDeveloperName>
+        <masterLabel>Validate &amp; Draft Email</masterLabel>
+        <pluginType>Topic</pluginType>
+    </localTopics>
+    <masterLabel>Submission Intake Agent</masterLabel>
+    <plannerType>Atlas__ConcurrentMultiAgentOrchestration</plannerType>
+</GenAiPlannerBundle>

@@ -1,0 +1,14 @@
+{
+  "required" : [ "submissionId" ],
+  "unevaluatedProperties" : false,
+  "properties" : {
+    "submissionId" : {
+      "title" : "Submission ID",
+      "description" : "he Salesforce record Id of the Submission to extract data for.",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    }
+  },
+  "lightning:type" : "lightning__objectType"
+}

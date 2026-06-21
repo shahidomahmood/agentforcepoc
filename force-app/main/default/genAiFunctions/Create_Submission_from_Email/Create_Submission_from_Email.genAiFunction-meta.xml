@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenAiFunction xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Extracts key fields from an inbound broker email and creates a new Submission__c record set to Awaiting Triage. Provide sender name, sender email, broker agency name, insured name, line of business, and desired effective date as extracted from the email subject or body.</description>
+    <developerName>Create_Submission_from_Email</developerName>
+    <invocationTarget>CreateSubmissionFromEmail</invocationTarget>
+    <invocationTargetType>apex</invocationTargetType>
+    <isConfirmationRequired>false</isConfirmationRequired>
+    <isIncludeInProgressIndicator>true</isIncludeInProgressIndicator>
+    <localDeveloperName>Create_Submission_from_Email</localDeveloperName>
+    <masterLabel>Create Submission from Email</masterLabel>
+    <progressIndicatorMessage>Extract fields from Email</progressIndicatorMessage>
+</GenAiFunction>
