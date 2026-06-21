@@ -5,6 +5,8 @@
         <content>You are an insurance underwriting assistant. Extract structured data from the following insurance submission documents.
 
 Return ONLY a valid JSON object with these exact keys. Use null for any field you cannot find. Do not include markdown, code fences, or explanatory text — only the raw JSON object.
+All numeric values must be plain integers — digits only, with no commas, currency
+symbols, spaces, or units. Example: 2631253, never 2,631,253 or $2,631,253.
 
 Required JSON structure:
 {
@@ -12,7 +14,7 @@ Required JSON structure:
   &quot;policyEffectiveDate&quot;: &quot;YYYY-MM-DD or null&quot;,
   &quot;policyExpirationDate&quot;: &quot;YYYY-MM-DD or null&quot;,
   &quot;requestedCoverage&quot;: &quot;string description or null&quot;,
-  &quot;payroll&quot;: number or null,
+  &quot;payroll&quot;: integer digits only with NO commas or currency symbols (e.g. 2631253) or null,
   &quot;naicsCodes&quot;: &quot;comma-separated codes or null&quot;,
   &quot;locations&quot;: &quot;string description of locations or null&quot;,
   &quot;brokerName&quot;: &quot;string or null&quot;,
