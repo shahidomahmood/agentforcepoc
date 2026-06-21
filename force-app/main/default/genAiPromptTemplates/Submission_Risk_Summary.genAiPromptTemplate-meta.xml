@@ -20,6 +20,6 @@ Write a 2-3 sentence underwriter brief that:
 Return only the brief text, no headings or extra commentary.</content>
         <status>Published</status>
     </templateVersions>
-    <type>SalesEmail</type>
+    <type>Flex</type>
     <visibility>Global</visibility>
 </GenAiPromptTemplate>

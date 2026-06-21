@@ -1,0 +1,14 @@
+{
+  "required" : [ "submissionId" ],
+  "unevaluatedProperties" : false,
+  "properties" : {
+    "submissionId" : {
+      "title" : "Submission ID",
+      "description" : "The Salesforce record Id of the Submission to assess. The agent must collect this from the user before running the action.",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    }
+  },
+  "lightning:type" : "lightning__objectType"
+}
